@@ -20,10 +20,12 @@ export default defineComponent({
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Palanquin&display=swap');
+
 html, body, #app {
   background-color: #EDEDED;
   margin: 10px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Palanquin', sans-serif;
   min-width: 330px;
 }
 </style>

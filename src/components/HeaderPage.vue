@@ -1,5 +1,5 @@
 <template>
-  <div class="header-container">
+  <div class="HeaderPage-container">
     <div class="logo">
       <img src="/public/file-icon.png" class="file-icon">
       <p class="title"> Curriculum Builder </p>
@@ -17,7 +17,7 @@ import GenericButton from './GenericButton.vue'
 import colors from '../utils/colors'
 
 export default defineComponent({
-  name: 'Header',
+  name: 'HeaderPage',
   components: {
     GenericButton,
   },
@@ -30,7 +30,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.header-container {
+.HeaderPage-container {
   height: 60px;
   background-color: var(--whiteColor);
   padding: 10px 10px;
@@ -60,7 +60,7 @@ export default defineComponent({
 }
 
 @media (max-width: 768px) {
-  .header-container {
+  .HeaderPage-container {
     display: flex;
     flex-direction: column;
     height: 76px;

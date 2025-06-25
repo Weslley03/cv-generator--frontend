@@ -1,15 +1,15 @@
 <template>
-  <textarea
+  <input
     :placeholder="placeholder"
-    class="textarea"
-  ></textarea>
+    class="input"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'GenericTextArea',
+  name: 'GenericInputRounded',
   components: {
 
   },
@@ -25,16 +25,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.textarea {
+.input {
   border: none;
   outline: none;
-  box-shadow: none;
-  resize: none;
-  width: 100%;
-  height: 30%;
-  background-color: transparent;
+  padding: 0 10px;
+  border-radius: 22px;
+  background-color: var(--whiteColor);
   font-size: 16px;
-  letter-spacing: -0.08em;
   color: var(--grayColor);
 }
 </style>

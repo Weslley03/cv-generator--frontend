@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     
-    <Header />
+    <HeaderPage />
 
     <div class="section basic-informations">
       <div class="first-column">
@@ -34,24 +34,38 @@
     </div>
 
     <div class="section floor">
-      <p> Experiência profissional </p>
-      <GenericButton :text="'Adicionar experiência'" :backgroundColor="colors.principalButton"/>
+      <div class="title">
+        <p> Experiência profissional </p>
+        <GenericButton class="button" :text="'Adicionar experiência'" :backgroundColor="colors.principalButton"/>
+      </div>
       <div class="workExperience">
-        <p> Empresa </p>
-        <GenericInput :placeholder="'Nome da empresa'"/> 
-        <p> Cargo </p>
-        <GenericInput :placeholder="'Cargo'"/> 
-        <p> Período trabalhado </p>
-        <GenericInput :placeholder="'ex: Janeiro 2024 - Junho 2025'"/> 
+        <div class="flex">
+          <div class="floor">
+            <p> Empresa </p>
+            <GenericInputRounded class="input-rounded" :placeholder="'Nome da empresa'"/> 
+          </div>
+          <div class="floor">
+            <p> Cargo </p>
+            <GenericInputRounded class="input-rounded" :placeholder="'Cargo'"/> 
+          </div>
+        </div>
+
+        <div class="floor">
+          <p> Período trabalhado </p>
+          <GenericInputRounded class="input-rounded" :placeholder="'ex: Janeiro 2024 - Junho 2025'"/> 
+        </div>
+
         <p> Descrição </p>
-        <GenericInput :placeholder="'Descreve suas responsabilidades'"/> 
+        <GenericTextArea class="description-textarea" :placeholder="'Descreve suas responsabilidades'"/> 
       </div>
     </div>
 
     <div class="section skils">
       <div class="floor">
+      <div class="title">
         <p> Habilidades </p>
-        <GenericButton :text="'Adicionar habilidade'" :backgroundColor="colors.principalButton"/>
+        <GenericButton class="button" :text="'Adicionar habilidade'" :backgroundColor="colors.principalButton"/>
+      </div>
         <GenericTextArea :placeholder="'Descreva suas habilidades'"/> 
       </div>
     </div>
@@ -68,19 +82,21 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Header from './Header.vue'
-import GenericInput from './GenericInput.vue'
-import GenericTextArea from './GenericTextArea.vue'
+import HeaderPage from '../components/HeaderPage.vue'
+import GenericInput from '../components/GenericInput.vue'
+import GenericTextArea from '../components/GenericTextArea.vue'
 import colors from '../utils/colors'
-import GenericButton from './GenericButton.vue'
+import GenericButton from '../components/GenericButton.vue'
+import GenericInputRounded from '../components/GenericInputRounded.vue'
 
 export default defineComponent({
   name: 'HomePage',
   components: {
-    Header,
+    HeaderPage,
     GenericInput,
     GenericTextArea,
     GenericButton,
+    GenericInputRounded,
   },
   setup() {
     return { 
@@ -120,10 +136,40 @@ export default defineComponent({
   font-weight: 500;
 }
 
+.title {
+  display: flex;
+  justify-content: space-between;
+}
+.title > p {
+  font-size: 16px;
+  font-weight: 500;
+}
+.button {
+  height: fit-content;
+  width: fit-content;
+}
+
 .workExperience {
   background-color: #EDEDED;
   padding: 3px 20px;
   border-radius: 12px;
+}
+.workExperience .flex {
+  display: flex;
+}
+.workExperience .floor {
+  width: 50%;
+}
+.input-rounded {
+  width: 90%;
+  height: 40px;
+}
+
+.description-textarea {
+  background-color: var(--whiteColor);
+  border-radius: 12px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
@@ -131,5 +177,18 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
   }
+
+  .title {
+    flex-direction: column;
+    margin: 10px;
   }
+
+  .workExperience .floor {
+    width: 100%;
+  }
+
+  .workExperience .flex{
+    flex-direction: column;
+  }
+}
 </style>

@@ -1,0 +1,71 @@
+<template>
+  <div class="header-container">
+    <div class="logo">
+      <img src="/public/file-icon.png" class="file-icon">
+      <p class="title"> Curriculum Builder </p>
+    </div>
+    <div class="actions-buttons">
+      <GenericButton :text="'Download'" :backgroundColor="colors.principalButton"/>
+      <GenericButton :text="'Preview'" :color="'black'" :border="true"/>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import GenericButton from './GenericButton.vue'
+import colors from '../utils/colors'
+
+export default defineComponent({
+  name: 'Header',
+  components: {
+    GenericButton,
+  },
+  setup() {
+    return {
+      colors,
+    }
+  }
+})
+</script>
+
+<style scoped>
+.header-container {
+  height: 60px;
+  min-width: 230px;
+  background-color: var(--whiteColor);
+  padding: 10px 10px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+.file-icon {
+  max-width: 22px;
+  margin-bottom: 4px;
+}
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+.actions-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    display: flex;
+    flex-direction: column;
+    height: 76px;
+    gap: 12px;
+  }
+}
+</style>

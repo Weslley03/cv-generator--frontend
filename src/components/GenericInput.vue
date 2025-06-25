@@ -28,7 +28,7 @@ export default defineComponent({
 .input {
   border: none;
   outline: none;
-  box-shadow: none;
+  padding: 10px;
   background-color: transparent;
   font-size: 16px;
   color: var(--grayColor);

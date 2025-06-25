@@ -34,7 +34,7 @@ export default defineComponent({
   height: 30%;
   background-color: transparent;
   font-size: 16px;
-  letter-spacing: -0.05em; 
+  letter-spacing: -0.08em; 
   color: var(--grayColor);
 }
 </style>

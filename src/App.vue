@@ -24,5 +24,6 @@ html, body, #app {
   background-color: #EDEDED;
   margin: 10px;
   font-family: Arial, Helvetica, sans-serif;
+  min-width: 330px;
 }
 </style>

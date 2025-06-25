@@ -33,6 +33,36 @@
       </div>
     </div>
 
+    <div class="section floor">
+      <p> Experiência profissional </p>
+      <GenericButton :text="'Adicionar experiência'" :backgroundColor="colors.principalButton"/>
+      <div class="workExperience">
+        <p> Empresa </p>
+        <GenericInput :placeholder="'Nome da empresa'"/> 
+        <p> Cargo </p>
+        <GenericInput :placeholder="'Cargo'"/> 
+        <p> Período trabalhado </p>
+        <GenericInput :placeholder="'ex: Janeiro 2024 - Junho 2025'"/> 
+        <p> Descrição </p>
+        <GenericInput :placeholder="'Descreve suas responsabilidades'"/> 
+      </div>
+    </div>
+
+    <div class="section skils">
+      <div class="floor">
+        <p> Habilidades </p>
+        <GenericButton :text="'Adicionar habilidade'" :backgroundColor="colors.principalButton"/>
+        <GenericTextArea :placeholder="'Descreva suas habilidades'"/> 
+      </div>
+    </div>
+
+    <div class="section objectives">
+      <div class="floor">
+        <p> Objetivo </p>
+        <GenericTextArea :placeholder="'Qual seu objetivo?'"/> 
+      </div>
+    </div>
+
  </div>
 </template>
 
@@ -41,6 +71,8 @@ import { defineComponent } from 'vue'
 import Header from './Header.vue'
 import GenericInput from './GenericInput.vue'
 import GenericTextArea from './GenericTextArea.vue'
+import colors from '../utils/colors'
+import GenericButton from './GenericButton.vue'
 
 export default defineComponent({
   name: 'HomePage',
@@ -48,8 +80,13 @@ export default defineComponent({
     Header,
     GenericInput,
     GenericTextArea,
+    GenericButton,
   },
-  setup() { return { } }
+  setup() {
+    return { 
+      colors,
+    }
+  }
 })
 </script>
 
@@ -83,7 +120,16 @@ export default defineComponent({
   font-weight: 500;
 }
 
-.aboutMe {
-  
+.workExperience {
+  background-color: #EDEDED;
+  padding: 3px 20px;
+  border-radius: 12px;
 }
+
+@media (max-width: 768px) {
+  .section.basic-informations {
+    display: flex;
+    flex-direction: column;
+  }
+  }
 </style>

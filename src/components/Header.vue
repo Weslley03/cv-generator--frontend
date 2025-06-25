@@ -32,7 +32,6 @@ export default defineComponent({
 <style scoped>
 .header-container {
   height: 60px;
-  min-width: 230px;
   background-color: var(--whiteColor);
   padding: 10px 10px;
   border-radius: 8px;

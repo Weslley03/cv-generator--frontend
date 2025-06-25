@@ -1,8 +1,6 @@
 <template>
   <div class="container">
-    
     <HeaderPage />
-
     <div class="section basic-informations">
       <div class="first-column">
         <div class="floor">
@@ -76,7 +74,7 @@
         <GenericTextArea :placeholder="'Qual seu objetivo?'"/> 
       </div>
     </div>
-
+    <FooterPage />
  </div>
 </template>
 
@@ -88,6 +86,7 @@ import GenericTextArea from '../components/GenericTextArea.vue'
 import colors from '../utils/colors'
 import GenericButton from '../components/GenericButton.vue'
 import GenericInputRounded from '../components/GenericInputRounded.vue'
+import FooterPage from '../components/FooterPage.vue'
 
 export default defineComponent({
   name: 'HomePage',
@@ -97,6 +96,7 @@ export default defineComponent({
     GenericTextArea,
     GenericButton,
     GenericInputRounded,
+    FooterPage,
   },
   setup() {
     return { 

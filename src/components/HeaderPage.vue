@@ -63,7 +63,7 @@ export default defineComponent({
   .HeaderPage-container {
     display: flex;
     flex-direction: column;
-    height: 76px;
+    height: 100px;
     gap: 12px;
   }
 }

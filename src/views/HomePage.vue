@@ -5,21 +5,21 @@
       <div class="first-column">
         <div class="floor">
           <p> Nome </p>
-          <GenericInput :placeholder="'Insira seu nome'"/>
+          <GenericInput class="input-normal" :placeholder="'Insira seu nome'"/>
         </div>
         <div class="floor">
           <p> Número </p>
-          <GenericInput :placeholder="'Insira seu número'"/>
+          <GenericInput class="input-normal" :placeholder="'Insira seu número'"/>
         </div>
       </div>
       <div class="second-column">
         <div class="floor">
           <p> Cidade </p>
-          <GenericInput :placeholder="'Insira sua cidade'"/>
+          <GenericInput class="input-normal" :placeholder="'Insira sua cidade'"/>
         </div>
         <div class="floor">
           <p> Email </p>
-          <GenericInput :placeholder="'Insira seu email'"/>
+          <GenericInput class="input-normal" :placeholder="'Insira seu email'"/>
         </div>
       </div>
     </div>
@@ -163,6 +163,9 @@ export default defineComponent({
 .input-rounded {
   width: 90%;
   height: 40px;
+}
+.input-normal {
+  width: 90%;
 }
 
 .description-textarea {

@@ -4,8 +4,7 @@
       <p> © 2025 Curriculum Builder. All rights reserved. </p>
     </div>
     <div class="links">
-      <p> weslley </p>
-      <p> vilela </p>
+      <p> weslleydev </p>
     </div>
   </div>
 </template>
@@ -33,6 +32,10 @@ export default defineComponent({
   padding: 10px 40px;
   border-radius: 8px;
   display: flex;
+}
+
+.rights {
+  color: gray;
 }
 
 .links {

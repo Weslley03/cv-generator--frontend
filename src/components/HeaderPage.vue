@@ -5,8 +5,11 @@
       <p class="title"> Curriculum Builder </p>
     </div>
     <div class="actions-buttons">
+      <slot name="actions">
+        <!-- fallback content -->
       <GenericButton :text="'Download'" :backgroundColor="colors.principalButton"/>
       <GenericButton :text="'Preview'" :color="'black'" :border="true"/>
+      </slot>
     </div>
   </div>
 </template>

@@ -1,25 +1,30 @@
 <template>
   <div class="container">
-    <HeaderPage />
+    <HeaderPage>
+      <template #actions>
+        <GenericButton :text="'Download'" :backgroundColor="colors.principalButton" />
+        <GenericButton @click="preview" :text="'Preview'" :color="'black'" :border="true" />
+      </template>
+    </HeaderPage>
     <div class="section basic-informations">
       <div class="first-column">
         <div class="floor">
           <p> Nome </p>
-          <GenericInput class="input-normal" :placeholder="'Insira seu nome'"/>
+          <GenericInput v-model="curriculumData.name" class="input-normal" :placeholder="'Insira seu nome'"/>
         </div>
         <div class="floor">
           <p> Número </p>
-          <GenericInput class="input-normal" :placeholder="'Insira seu número'"/>
+          <GenericInput v-model="curriculumData.number" class="input-normal" :placeholder="'Insira seu número'"/>
         </div>
       </div>
       <div class="second-column">
         <div class="floor">
           <p> Cidade </p>
-          <GenericInput class="input-normal" :placeholder="'Insira sua cidade'"/>
+          <GenericInput v-model="curriculumData.city" class="input-normal" :placeholder="'Insira sua cidade'"/>
         </div>
         <div class="floor">
           <p> Email </p>
-          <GenericInput class="input-normal" :placeholder="'Insira seu email'"/>
+          <GenericInput v-model="curriculumData.email" class="input-normal" :placeholder="'Insira seu email'"/>
         </div>
       </div>
     </div>
@@ -27,7 +32,7 @@
     <div class="section aboutMe">
       <div class="floor">
         <p> Sobre mim </p>
-        <GenericTextArea :placeholder="'Escreva um pouco sobre você'"/> 
+        <GenericTextArea v-model="curriculumData.aboutMe" :placeholder="'Escreva um pouco sobre você'"/> 
       </div>
     </div>
 
@@ -40,21 +45,21 @@
         <div class="flex">
           <div class="floor">
             <p> Empresa </p>
-            <GenericInputRounded class="input-rounded" :placeholder="'Nome da empresa'"/> 
+            <GenericInputRounded v-model="curriculumData.workExperience[0].company" class="input-rounded" :placeholder="'Nome da empresa'"/> 
           </div>
           <div class="floor">
             <p> Cargo </p>
-            <GenericInputRounded class="input-rounded" :placeholder="'Cargo'"/> 
+            <GenericInputRounded v-model="curriculumData.workExperience[0].cargo" class="input-rounded" :placeholder="'Cargo'"/> 
           </div>
         </div>
 
         <div class="floor">
           <p> Período trabalhado </p>
-          <GenericInputRounded class="input-rounded" :placeholder="'ex: Janeiro 2024 - Junho 2025'"/> 
+          <GenericInputRounded v-model="curriculumData.workExperience[0].workPeriod" class="input-rounded" :placeholder="'ex: Janeiro 2024 - Junho 2025'"/> 
         </div>
 
         <p> Descrição </p>
-        <GenericTextArea class="description-textarea" :placeholder="'Descreve suas responsabilidades'"/> 
+        <GenericTextArea v-model="curriculumData.workExperience[0].description" class="description-textarea" :placeholder="'Descreve suas responsabilidades'"/> 
       </div>
     </div>
 
@@ -64,14 +69,14 @@
         <p> Habilidades </p>
         <GenericButton class="button" :text="'Adicionar habilidade'" :backgroundColor="colors.principalButton"/>
       </div>
-        <GenericTextArea :placeholder="'Descreva suas habilidades'"/> 
+        <GenericTextArea v-model="curriculumData.skills[0].description" :placeholder="'Descreva suas habilidades'"/> 
       </div>
     </div>
 
     <div class="section objectives">
       <div class="floor">
         <p> Objetivo </p>
-        <GenericTextArea :placeholder="'Qual seu objetivo?'"/> 
+        <GenericTextArea v-model="curriculumData.objective[0].description" :placeholder="'Qual seu objetivo?'"/> 
       </div>
     </div>
     <FooterPage />
@@ -79,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import HeaderPage from '../components/HeaderPage.vue'
 import GenericInput from '../components/GenericInput.vue'
 import GenericTextArea from '../components/GenericTextArea.vue'
@@ -99,8 +104,27 @@ export default defineComponent({
     FooterPage,
   },
   setup() {
+
+    const log = (value: unknown) => console.log(value)
+
+    const curriculumData = reactive({
+      name: "",
+      city: "",
+      number: "",
+      email: "",
+      aboutMe: "",
+      workExperience: [ { company: "", cargo: "", workPeriod: "", description: "" } ],
+      skills: [ { description: "" } ],
+      objective: [ { description: "" } ]
+    });
+
+    const preview = () => {
+      log(curriculumData)
+    }
     return { 
       colors,
+      curriculumData,
+      preview,
     }
   }
 })

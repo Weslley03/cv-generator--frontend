@@ -1,7 +1,6 @@
 <template>
   <button
     :style="buttonStyle"
-    @click="$emit('click')"
     class="generic-button"
   >
     {{ text }}

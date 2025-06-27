@@ -2,6 +2,8 @@
   <input
     :placeholder="placeholder"
     class="input"
+    :value="modelValue"
+    @input="(e: Event) => $emit('update:modelValue', (e.target as HTMLInputElement).value)"
   />
 </template>
 
@@ -14,12 +16,12 @@ export default defineComponent({
 
   },
   props: {
-    placeholder: { type: String, default: '' }
+    placeholder: { type: String, default: '' },
+    modelValue: { type: String, default: '' },
   },
+  emits: ['update:modelValue'],
   setup() {
-    return {
-
-    }
+    return {}
   }
 })
 </script>

@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div v-if="!previewHtml" class="container">
     <HeaderPage>
       <template #actions>
-        <GenericButton :text="'Download'" :backgroundColor="colors.principalButton" />
-        <GenericButton @click="preview" :text="'Preview'" :color="'black'" :border="true" />
+        <GenericButton @click="handleClick('download')" :text="'Download'" :backgroundColor="colors.principalButton" />
+        <GenericButton @click="handleClick('preview')" :text="'Preview'" :color="'black'" :border="true" />
       </template>
     </HeaderPage>
     <div class="section basic-informations">
@@ -36,40 +36,40 @@
       </div>
     </div>
 
-    <div class="section floor">
+    <div class="section floor" v-for="(exp, index) in curriculumData.workExperience" :key="index">
       <div class="title">
         <p> Experiência profissional </p>
-        <GenericButton class="button" :text="'Adicionar experiência'" :backgroundColor="colors.principalButton"/>
+        <GenericButton @click="addWorkExperience" class="button" :text="'Adicionar experiência'" :backgroundColor="colors.principalButton"/>
       </div>
       <div class="workExperience">
         <div class="flex">
           <div class="floor">
             <p> Empresa </p>
-            <GenericInputRounded v-model="curriculumData.workExperience[0].company" class="input-rounded" :placeholder="'Nome da empresa'"/> 
+            <GenericInputRounded v-model="exp.company" class="input-rounded" :placeholder="'Nome da empresa'"/> 
           </div>
           <div class="floor">
             <p> Cargo </p>
-            <GenericInputRounded v-model="curriculumData.workExperience[0].cargo" class="input-rounded" :placeholder="'Cargo'"/> 
+            <GenericInputRounded v-model="exp.cargo" class="input-rounded" :placeholder="'Cargo'"/> 
           </div>
         </div>
 
         <div class="floor">
           <p> Período trabalhado </p>
-          <GenericInputRounded v-model="curriculumData.workExperience[0].workPeriod" class="input-rounded" :placeholder="'ex: Janeiro 2024 - Junho 2025'"/> 
+          <GenericInputRounded v-model="exp.workPeriod" class="input-rounded" :placeholder="'ex: Janeiro 2024 - Junho 2025'"/> 
         </div>
 
         <p> Descrição </p>
-        <GenericTextArea v-model="curriculumData.workExperience[0].description" class="description-textarea" :placeholder="'Descreve suas responsabilidades'"/> 
+        <GenericTextArea v-model="exp.description" class="description-textarea" :placeholder="'Descreve suas responsabilidades'"/> 
       </div>
     </div>
 
     <div class="section skils">
-      <div class="floor">
-      <div class="title">
-        <p> Habilidades </p>
-        <GenericButton class="button" :text="'Adicionar habilidade'" :backgroundColor="colors.principalButton"/>
-      </div>
-        <GenericTextArea v-model="curriculumData.skills[0].description" :placeholder="'Descreva suas habilidades'"/> 
+      <div class="floor" v-for="(s, index) in curriculumData.skills" :key="index">
+        <div class="title">
+          <p> Habilidades </p>
+          <GenericButton @click="addSkills" class="button" :text="'Adicionar habilidade'" :backgroundColor="colors.principalButton"/>
+        </div>
+        <GenericTextArea v-model="s.description" :placeholder="'Descreva suas habilidades'"/> 
       </div>
     </div>
 
@@ -81,10 +81,11 @@
     </div>
     <FooterPage />
  </div>
+ <div v-if="previewHtml" v-html="previewHtml" class="curriculum-preview" />
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref, watch } from 'vue'
 import HeaderPage from '../components/HeaderPage.vue'
 import GenericInput from '../components/GenericInput.vue'
 import GenericTextArea from '../components/GenericTextArea.vue'
@@ -92,6 +93,7 @@ import colors from '../utils/colors'
 import GenericButton from '../components/GenericButton.vue'
 import GenericInputRounded from '../components/GenericInputRounded.vue'
 import FooterPage from '../components/FooterPage.vue'
+import { config_env_data } from '../utils/config'
 
 export default defineComponent({
   name: 'HomePage',
@@ -104,8 +106,9 @@ export default defineComponent({
     FooterPage,
   },
   setup() {
-
-    const log = (value: unknown) => console.log(value)
+    const allInputsFilled = ref(false)
+    const previewHtml = ref("")
+    type optionClick = 'preview' | 'download'
 
     const curriculumData = reactive({
       name: "",
@@ -116,15 +119,124 @@ export default defineComponent({
       workExperience: [ { company: "", cargo: "", workPeriod: "", description: "" } ],
       skills: [ { description: "" } ],
       objective: [ { description: "" } ]
-    });
+    })
 
-    const preview = () => {
-      log(curriculumData)
+    const handleClick = (caller: optionClick) => {
+      if (!allInputsFilled.value) { 
+        alert('empty datas')
+        return
+      } 
+
+      switch (caller) {
+        case 'preview':
+          return preview()
+        case 'download':
+          return download()
+      }
     }
+
+    const preview = async () => {
+      try {
+        const data = cleanEmptyArrayItems(curriculumData)
+
+        const response = await fetch(config_env_data.API + '/view', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+
+        const html = await response.text()
+        previewHtml.value = html
+      } catch (error) {
+        console.error('erro ao gerar preview:', error)
+      }
+    }
+
+    const download = () => {
+      const data = cleanEmptyArrayItems(curriculumData)
+
+      fetch(config_env_data.API + '/pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', 'curriculum.pdf')
+          document.body.appendChild(link)
+          link.click()
+          link.remove()
+        })
+        .catch(error => {
+          console.error('erro ao baixar o PDF:', error)
+        })
+    } 
+
+    const checkAllFieldsFilled = (data: typeof curriculumData): boolean => {
+      const basicFields = ['name', 'city', 'number', 'email', 'aboutMe'];
+      for (const key of basicFields) {
+        if (!data[key as keyof typeof data]) return false;
+      }
+
+      const someWorkFilled = data.workExperience.some(w =>
+        w.company && w.cargo && w.workPeriod && w.description
+      )
+
+      const someSkillsFilled = data.skills.some(s => s.description)
+      const allObjectivesFilled = data.objective.every(o => o.description)
+
+      return someWorkFilled && someSkillsFilled && allObjectivesFilled
+    }
+
+    const cleanEmptyArrayItems = (data: typeof curriculumData) => {
+      data.workExperience = data.workExperience.filter(w =>
+        w.company || w.cargo || w.workPeriod || w.description
+      )
+
+      data.skills = data.skills.filter(s => s.description)
+
+      data.objective = data.objective.filter(o => o.description)
+
+      return data
+    }
+
+    const addWorkExperience = () => {
+      curriculumData.workExperience.push({
+        company: "",
+        cargo: "",
+        workPeriod: "",
+        description: ""
+      });
+    }
+
+    const addSkills = () => {
+      curriculumData.skills.push({
+        description: ""
+      });
+    }
+
+    watch(
+      () => curriculumData,
+      (newvalue) => {
+        allInputsFilled.value = checkAllFieldsFilled(newvalue)
+      }, { immediate: true, deep: true }
+    )
+
     return { 
       colors,
       curriculumData,
+      handleClick,
       preview,
+      previewHtml,
+      addWorkExperience,
+      addSkills,
     }
   }
 })
@@ -197,6 +309,13 @@ export default defineComponent({
   border-radius: 12px;
   padding: 10px;
   box-sizing: border-box;
+}
+
+.curriculum-preview {
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  padding: 15px;
+  background: #fff;
 }
 
 @media (max-width: 768px) {

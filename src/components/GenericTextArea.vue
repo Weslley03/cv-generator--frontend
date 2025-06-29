@@ -2,6 +2,8 @@
   <textarea
     :placeholder="placeholder"
     class="textarea"
+    :value="modelValue"
+    @input="(e: Event) => $emit('update:modelValue', (e.target as HTMLInputElement).value)"
   ></textarea>
 </template>
 
@@ -14,7 +16,8 @@ export default defineComponent({
 
   },
   props: {
-    placeholder: { type: String, default: '' }
+    placeholder: { type: String, default: '' },
+    modelValue: { type: String, default: '' },
   },
   setup() {
     return {

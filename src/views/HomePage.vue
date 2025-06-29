@@ -3,7 +3,7 @@
     <HeaderPage>
       <template #actions>
         <GenericButton :text="'Download'" :backgroundColor="colors.principalButton" />
-        <GenericButton @click="preview" :text="'Preview'" :color="'black'" :border="true" />
+        <GenericButton @click="handlePreview" :text="'Preview'" :color="'black'" :border="true" />
       </template>
     </HeaderPage>
     <div class="section basic-informations">
@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref, watch } from 'vue'
 import HeaderPage from '../components/HeaderPage.vue'
 import GenericInput from '../components/GenericInput.vue'
 import GenericTextArea from '../components/GenericTextArea.vue'
@@ -104,6 +104,7 @@ export default defineComponent({
     FooterPage,
   },
   setup() {
+    const allInputsFilled = ref(false)
 
     const log = (value: unknown) => console.log(value)
 
@@ -118,12 +119,42 @@ export default defineComponent({
       objective: [ { description: "" } ]
     });
 
+    const handlePreview = () => {
+      if (!allInputsFilled.value ) alert('empty datas')
+      preview()
+    } 
+
     const preview = () => {
       log(curriculumData)
     }
+
+    const checkAllFieldsFilled = (data: typeof curriculumData): boolean => {
+      const basicFields = ['name', 'city', 'number', 'email', 'aboutMe'];
+      for (const key of basicFields) {
+        if (!data[key as keyof typeof data]) return false;
+      }
+
+      const allWorkFilled = data.workExperience.every(w =>
+        w.company && w.cargo && w.workPeriod && w.description
+      );
+
+      const allSkillsFilled = data.skills.every(s => s.description);
+      const allObjectivesFilled = data.objective.every(o => o.description);
+
+      return allWorkFilled && allSkillsFilled && allObjectivesFilled;
+    }
+
+    watch(
+      () => curriculumData,
+      (newvalue) => {
+        allInputsFilled.value = checkAllFieldsFilled(newvalue)
+      }, { immediate: true, deep: true }
+    )
+
     return { 
       colors,
       curriculumData,
+      handlePreview,
       preview,
     }
   }

@@ -1,11 +1,13 @@
 <template>
   <div v-if="!previewHtml" class="container">
+
     <HeaderPage>
       <template #actions>
         <GenericButton @click="handleClick('download')" :text="'Download'" :backgroundColor="colors.principalButton" />
         <GenericButton @click="handleClick('preview')" :text="'Preview'" :color="'black'" :border="true" />
       </template>
     </HeaderPage>
+
     <div class="section basic-informations">
       <div class="first-column">
         <div class="floor">
@@ -32,7 +34,9 @@
     <div class="section aboutMe">
       <div class="floor">
         <p> Sobre mim </p>
-        <GenericTextArea v-model="curriculumData.aboutMe" :placeholder="'Escreva um pouco sobre você'"/> 
+        <div style="height: 150px;">
+          <GenericTextArea v-model="curriculumData.aboutMe" :placeholder="'Escreva um pouco sobre você'"/> 
+        </div>
       </div>
     </div>
 
@@ -59,7 +63,9 @@
         </div>
 
         <p> Descrição </p>
-        <GenericTextArea v-model="exp.description" class="description-textarea" :placeholder="'Descreve suas responsabilidades'"/> 
+        <div style="height: 120px; margin-bottom: 20px;">
+          <GenericTextArea v-model="exp.description" class="description-textarea" :placeholder="'Descreve suas responsabilidades'"/> 
+        </div>
       </div>
     </div>
 
@@ -69,18 +75,24 @@
           <p> Habilidades </p>
           <GenericButton @click="addSkills" class="button" :text="'Adicionar habilidade'" :backgroundColor="colors.principalButton"/>
         </div>
-        <GenericTextArea v-model="s.description" :placeholder="'Descreva suas habilidades'"/> 
+        <div style="height: 150px;">
+          <GenericTextArea v-model="s.description" :placeholder="'Descreva suas habilidades'"/> 
+        </div>
       </div>
     </div>
 
     <div class="section objectives">
       <div class="floor">
         <p> Objetivo </p>
-        <GenericTextArea v-model="curriculumData.objective[0].description" :placeholder="'Qual seu objetivo?'"/> 
+        <div style="height: 150px;">
+          <GenericTextArea v-model="curriculumData.objective[0].description" :placeholder="'Qual seu objetivo?'"/> 
+        </div>
       </div>
     </div>
     <FooterPage />
  </div>
+ <div v-if="previewHtml"> <GenericButton @click="previewHtml = ''" class="button" :text="'voltar'"
+    :backgroundColor="colors.principalButton"/> </div>
  <div v-if="previewHtml" v-html="previewHtml" class="curriculum-preview" />
 </template>
 
